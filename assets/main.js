@@ -10,10 +10,13 @@ const progress = $('#progress');
 const prevBtn = $('.btn-prev');
 const nextBtn = $('.btn-next');
 const shuffleBtn = $('.btn-shuffle');
+const repeatBtn = $('.btn-repeat');
+const playlist = $('.playlist');
 const app = {
-    currentIndex: 1,
+    currentIndex: 0,
     isPlaying: false,
     isShuffle: false,
+    isRepeat: false,
     songs : [
         {
             name:'Peaches',
@@ -77,8 +80,8 @@ const app = {
         }
     ],
     render: function() {
-        const htmls =this.songs.map((song) => {
-            return ` <div class="song">
+        const htmls =this.songs.map((song, index) => {
+            return ` <div class="song ${index === this.currentIndex ? 'active' : ''}" data-index="${index}">
             <div class="thumb-song" style="background-image:url('${song.img}')"></div>
              <div class="body-song">
                  <h5 class="name-song">${song.name}</h5>
@@ -89,7 +92,7 @@ const app = {
              </div>
          </div>`
         })
-        $('.playlist').innerHTML = htmls.join('');
+        playlist.innerHTML = htmls.join('');
     },
 
     handleEvent: function() {
@@ -150,31 +153,72 @@ const app = {
 
        //Khi an nut nextSong
        nextBtn.onclick = function() {
-            if(_this.isShuffle) {
+            if(_this.isShuffle) 
                 _this.playRandomSong();
-                audio.play();   
-            } else {
+             else 
                 _this.nextSong();
-                audio.play();   
-            }
-            
+            audio.play();   
+            _this.render();
+            //Nguoc lai thi into view nearest
+            if(_this.currentIndex > 1)
+                _this.scrollIntoView();
+            //Khi ma index nam trong khoang tu 0 toi 1 thi into view center
+            else 
+                _this.scrollCenterView();
        } 
 
        //Khi an nut prevSong
        prevBtn.onclick = function() {
-        if(_this.isShuffle) {
+        if(_this.isShuffle) 
             _this.playRandomSong();
-            audio.play();
-        } else {
+         else 
             _this.prevSong();
             audio.play();
-        }
+            _this.render();
+            //Nguoc lai thi into view nearest
+            if(_this.currentIndex > 1)
+                _this.scrollIntoView();
+            //Khi ma index nam trong khoang tu 0 toi 1 thi into view center
+            else 
+                _this.scrollCenterView();
        }
 
        //An hien nut shuffle 
        shuffleBtn.onclick = function() {
             _this.isShuffle = !_this.isShuffle;
-            shuffleBtn.classList.toggle('active',this.isShuffle);
+            shuffleBtn.classList.toggle('active',_this.isShuffle);
+       }
+
+       repeatBtn.onclick = function() {
+            _this.isRepeat = !_this.isRepeat;
+            repeatBtn.classList.toggle('active',_this.isRepeat);
+       }
+
+       //Xu li nextSong khi ended
+       audio.onended = function() {
+            if(_this.isRepeat) 
+                audio.play();
+            else
+            nextBtn.click();
+       }
+
+       //Xu li khi click vao playlist
+       playlist.onclick = function(e) {
+            const songNode = e.target.closest('.song:not(.active)');
+            if (songNode || e.target.closest('.option-song')) {
+                // Xu li khi click vao songNode chua active
+                if(songNode) {
+                    _this.currentIndex = Number(songNode.dataset.index);
+                    _this.loadCurrentSong();
+                    audio.play();
+                    _this.render();
+                }
+
+                // Xu li khi click nao nut option
+                if (e.target.closest('.option-song')) {
+
+                }
+            }
        }
     },
 
@@ -192,6 +236,24 @@ const app = {
             this.currentIndex = this.songs.length - 1
         }
         this.loadCurrentSong();
+    },
+
+    scrollIntoView: function() {
+        setTimeout(function() {
+            $('.song.active').scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest'
+            })
+        }, 300);
+    },
+
+    scrollCenterView: function() {
+        setTimeout(function() {
+            $('.song.active').scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            })
+        }, 300);
     },
 
     //Dinh nghia cac bien moi cho Objects
