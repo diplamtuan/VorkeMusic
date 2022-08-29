@@ -1,0 +1,169 @@
+:root {
+    --primary-color :#ec1f7f;
+    --text-color: #333;
+}
+
+*{
+    box-sizing: inherit;
+    padding:0;
+    margin:0;
+}
+
+html {
+    font-size:62.5%;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: #f5f5f5;
+}
+
+.player {
+    position: relative;
+    max-width:480px;
+    margin: 0 auto;
+}
+
+.player .icon-pause {
+    display:none;
+}
+
+.player.playing .icon-pause {
+    display:inline-block;
+}
+
+.player.playing .icon-play {
+    display:none;
+}
+
+.dashboard {
+    background-color: #fff;
+    padding : 16px;
+    margin-bottom: 16px;
+    border-radius: 4px;
+    position:fixed;
+    width:480px;
+    z-index:1;
+    top:0;
+}
+
+.dashboard__header {
+    text-align: center;
+}
+
+.dashboard__header-heading-4 {
+    font-size:1rem;
+    color:var(--primary-color);
+}
+
+
+.dashboard__header-heading-2 {
+    font-size:1.6rem;
+}
+
+.cd {
+    width:200px;
+    margin:16px auto;
+
+}
+
+.cd-thumb {
+    width:100%;
+    padding-top:100%;
+    background-repeat: no-repeat;
+    background-size:cover;
+    border-radius: 50%;
+}
+
+.dashboard__control {
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+}
+
+.btn {
+    color:#666;
+    font-size:2rem;
+    cursor:pointer;
+}
+
+.btn-toggle-play {
+    color:var(--primary-color);
+    font-size: 6rem;
+}
+
+.btn.btn-shuffle.active {
+    color: var(--primary-color);
+}
+
+.progress {
+    -webkit-appearance: none;
+    width:100%;
+    height:10px;
+    background:#e0e0e0;
+    outline: none;
+    border-radius: 4px;
+}
+
+.progress::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    background:var(--primary-color);
+    width: 20px;
+    height: 10px;
+    border-radius : 4px;
+}
+
+.playlist {
+    max-width: 456px;
+    margin: 430px auto 0
+}
+
+.song {
+    background: #fff;
+    display:flex;
+    padding: 16px 24px;
+    border-radius: 4px;
+    margin: 16px auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+
+}
+
+.thumb-song {
+    width:44px;
+    height: 44px;
+    background-size: cover;
+    border-radius: 50%;
+
+}
+
+.body-song {
+    margin-left: 24px;
+    flex:1;
+}
+
+.name-song {
+    font-size:1.6rem;
+    font-weight: 800;
+}
+
+.author-song {
+    color:#999;
+}
+
+.option-song {
+    position:relative;
+    top: 14px;
+}
+
+.option-song-icon {
+    color :#999;
+    font-size:2rem;
+}
+
+
+@media (max-width: 768px) {
+    .dashboard {
+        max-width:100%;
+    }
+}
