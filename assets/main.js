@@ -7,11 +7,13 @@ const audio = $('#audio');
 const player = $('.player');
 const playBtn = $('.btn-toggle-play');
 const progress = $('#progress');
+const progressVolume = $('#progress-volume');
 const prevBtn = $('.btn-prev');
 const nextBtn = $('.btn-next');
 const shuffleBtn = $('.btn-shuffle');
 const repeatBtn = $('.btn-repeat');
 const playlist = $('.playlist');
+
 const app = {
     currentIndex: 0,
     isPlaying: false,
@@ -151,6 +153,19 @@ const app = {
             audio.currentTime = seekTime;            
        }
 
+       //Xu li timeline cua volume
+
+       audio.onvolumechange = function () {
+            const progressVolumePercent = (audio.volume / 1 * 100);
+            progressVolume.value = progressVolumePercent;
+       }
+
+       //Xu li khi volume To / Nho
+       progressVolume.onchange = function(e) {
+            const volumeValue = e.target.value / 100;
+            audio.volume = volumeValue;
+       }
+
        //Khi an nut nextSong
        nextBtn.onclick = function() {
             if(_this.isShuffle) 
@@ -221,7 +236,6 @@ const app = {
             }
        }
     },
-
     nextSong: function() {
         this.currentIndex++;
         if(this.currentIndex >= this.songs.length){
